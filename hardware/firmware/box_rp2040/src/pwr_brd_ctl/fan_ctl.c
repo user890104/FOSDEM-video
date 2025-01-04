@@ -44,10 +44,10 @@ bool fan_ctl_i2c_write_and_check(uint8_t reg_id, uint8_t val) {
 
 bool fan_ctl_get_fan_speed(uint8_t fan_id, uint16_t* dest) {
     uint8_t lsb, msb;
-    if (!fan_ctl_i2c_read(EMC230x_REG_TACHREADMSB + 0x10*fan_id, &msb)) {
+    if (!fan_ctl_i2c_read(EMC230x_REG_TACH_READING_MSB + 0x10*fan_id, &msb)) {
         return false;
     }
-    if (!fan_ctl_i2c_read(EMC230x_REG_TACHREADLSB + 0x10*fan_id, &lsb)) {
+    if (!fan_ctl_i2c_read(EMC230x_REG_TACH_READING_LSB + 0x10*fan_id, &lsb)) {
         return false;
     }
 
@@ -72,38 +72,38 @@ bool fan_ctl_get_fan_speed(uint8_t fan_id, uint16_t* dest) {
 }
 
 bool fan_ctl_get_pwm(uint8_t fan_id, uint8_t* dest) {
-    return fan_ctl_i2c_read(EMC230x_REG_FANSETTING + 0x10*fan_id, dest);
+    return fan_ctl_i2c_read(EMC230x_REG_FAN_DRIVE_SETTING + 0x10*fan_id, dest);
 }
 
 bool fan_ctl_set_pwm(uint8_t fan_id, uint8_t duty) {
     uint8_t fanconfig1;
-    if (!fan_ctl_i2c_read(EMC230x_REG_FANCONFIG1 + 0x10*fan_id, &fanconfig1)) {
+    if (!fan_ctl_i2c_read(EMC230x_REG_FAN_CONFIG + 0x10*fan_id, &fanconfig1)) {
         return false;
     }
     fanconfig1 &= ~(1 << 7);    // disable PID controller
-    if (!fan_ctl_i2c_write_and_check(EMC230x_REG_FANCONFIG1 + 0x10*fan_id, fanconfig1)) {
+    if (!fan_ctl_i2c_write_and_check(EMC230x_REG_FAN_CONFIG + 0x10*fan_id, fanconfig1)) {
         return false;
     }
 
-    return fan_ctl_i2c_write_and_check(EMC230x_REG_FANSETTING + 0x10*fan_id, duty);
+    return fan_ctl_i2c_write_and_check(EMC230x_REG_FAN_DRIVE_SETTING + 0x10*fan_id, duty);
 }
 
 bool fan_ctl_set_fan_speed(uint8_t fan_id, uint16_t speed) {
     uint8_t fanconfig1;
-    if (!fan_ctl_i2c_read(EMC230x_REG_FANCONFIG1 + 0x10*fan_id, &fanconfig1)) {
+    if (!fan_ctl_i2c_read(EMC230x_REG_FAN_CONFIG + 0x10*fan_id, &fanconfig1)) {
         return false;
     }
     fanconfig1 |= (1 << 7);    // enable PID controller
-    if (!fan_ctl_i2c_write_and_check(EMC230x_REG_FANCONFIG1 + 0x10*fan_id, fanconfig1)) {
+    if (!fan_ctl_i2c_write_and_check(EMC230x_REG_FAN_CONFIG + 0x10*fan_id, fanconfig1)) {
         return false;
     }
 
     uint8_t lsb = (speed << 3) && 0xf8;
     uint8_t msb = (speed >> 5) && 0xff;
-    if (!fan_ctl_i2c_write(EMC230x_REG_TACHTARGETLSB + 0x10 * fan_id, lsb)) {
+    if (!fan_ctl_i2c_write(EMC230x_REG_TACH_TARGET_LSB + 0x10 * fan_id, lsb)) {
         return false;
     }
-    if (!fan_ctl_i2c_write(EMC230x_REG_TACHTARGETMSB + 0x10 * fan_id, msb)) {
+    if (!fan_ctl_i2c_write(EMC230x_REG_TACH_TARGET_MSB + 0x10 * fan_id, msb)) {
         return false;
     }
     return true;
@@ -118,7 +118,7 @@ bool fan_ctl_set_fan_speed_target(uint8_t fan_id, uint16_t speed) {
 }
 
 bool fan_ctl_get_fan_status(uint8_t* dest) {
-    return fan_ctl_i2c_read(EMC230x_REG_FANSTATUS, dest);
+    return fan_ctl_i2c_read(EMC230x_REG_FAN_STATUS, dest);
 }
 
 /*
