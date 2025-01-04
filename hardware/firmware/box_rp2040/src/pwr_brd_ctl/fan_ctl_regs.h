@@ -1,3 +1,5 @@
+#pragma once
+
 const uint8_t EMC230x_REG_CONFIG                = 0x20;
 const uint8_t EMC230x_REG_FAN_STATUS            = 0x24;
 const uint8_t EMC230x_REG_FAN_STALL_STATUS      = 0x25;
@@ -23,6 +25,11 @@ const uint8_t EMC230x_REG_TACH_TARGET_LSB       = 0x3C;
 const uint8_t EMC230x_REG_TACH_TARGET_MSB       = 0x3D;
 const uint8_t EMC230x_REG_TACH_READING_MSB      = 0x3E;
 const uint8_t EMC230x_REG_TACH_READING_LSB      = 0x3F;
+const uint8_t EMC230x_REG_SOFTWARE_LOCK         = 0xEF;
+const uint8_t EMC230x_REG_PROD_FEAT             = 0xFC;
+const uint8_t EMC230x_REG_PRODUCT_ID            = 0xFD;
+const uint8_t EMC230x_REG_MFG_ID                = 0xFE;
+const uint8_t EMC230x_REG_REV                   = 0xFF;
 
 /* Registers that can have values written directly into them (i.e. the entire register is meant for a single number):
     EMC230x_REG_FAN_DRIVE_SETTING
@@ -94,3 +101,8 @@ const uint8_t EMC230x_REG_FAN_SPIN_SPINUPTIME_2000  = 0x03;
 
 // EMC230x_REG_MAX_STEP
 const uint8_t EMC230x_REG_MAX_STEP_MAX = 0b00111111;
+
+const uint8_t EMC230x_REG_PRODUCT_ID_EMC2305 = 0x00;
+const uint8_t EMC230x_REG_PRODUCT_ID_EMC2303 = 0x01;
+const uint8_t EMC230x_REG_PRODUCT_ID_EMC2302 = 0x02;
+const uint8_t EMC230x_REG_PRODUCT_ID_EMC2301 = 0x03;
